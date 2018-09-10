@@ -258,13 +258,18 @@
      value = 1.02
      sink_strength = dislocation_density
    [../]
-  [./source_g]
+  [./source_g_BCMC]
     type = MyTRIMElementSource
     variable = wg
     runner = runner
     ivar = 3
     defect = INT
     prefactor = 0.04092
+  [../]
+  [./source_g_fission]
+    type = BodyForce
+    variable = wv
+    value = 2.35e-9
   [../]
 []
 
@@ -433,7 +438,7 @@
     f_name = kappa
     material_property_names = 'T'
     constant_names = 'l_int sigma_GB'
-    constant_expressions = '100 9.36226'
+    constant_expressions = '50 9.36226'
     function = '3/4 * sigma_GB * l_int'
   [../]
 
@@ -442,7 +447,7 @@
     f_name = mu
     material_property_names = 'T'
     constant_names = 'l_int sigma_GB'
-    constant_expressions = '100 9.36226'
+    constant_expressions = '50 9.36226'
     function = '6 * sigma_GB / l_int'
   [../]
 
@@ -451,7 +456,7 @@
     f_name = L
     material_property_names = 'T'
     constant_names = 'M0 l_int Q kB'
-    constant_expressions = '1.475989e9 100 2.77 8.617343e-5'
+    constant_expressions = '1.475989e9 50 2.77 8.617343e-5'
     function = '4/3 * M0 * exp(-Q/(kB*T)) / l_int'
   [../]
   # Equilibrium concentrations of defects
