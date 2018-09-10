@@ -307,13 +307,11 @@
     type = MaterialRealAux
     property = rhog
     variable = rhog_var
-    execute_on = 'initial timestep_begin'
   [../]
   [./rhoi_aux] # U interstitial
     type = MaterialRealAux
     property = rhoi
     variable = rhoi_var
-    execute_on = 'initial timestep_begin'
   [../]
   [./local_energy]
     type = TotalFreeEnergy
@@ -328,19 +326,16 @@
     type = MaterialRealAux
     property = cv_mat
     variable = cv
-    execute_on = 'initial timestep_begin'
   [../]
   [./ci_aux]
     type = MaterialRealAux
     property = ci_mat
     variable = ci
-    execute_on = 'initial timestep_begin'
   [../]
   [./c_Xe]
     type = MaterialRealAux
     property = c_Xe_matl
     variable = c_Xe
-    execute_on = 'initial timestep_begin'
   [../]
 []
 
