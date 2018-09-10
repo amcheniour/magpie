@@ -268,7 +268,7 @@
   [../]
   [./source_g_fission]
     type = BodyForce
-    variable = wv
+    variable = wg
     value = 2.35e-9
   [../]
 []
