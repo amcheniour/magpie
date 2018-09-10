@@ -10,6 +10,7 @@
 #include "MagpieApp.h"
 #include "Moose.h"
 #include "MooseSyntax.h"
+#include "PhaseFieldApp.h"
 
 template <>
 InputParameters
@@ -32,6 +33,10 @@ MagpieApp::MagpieApp(const InputParameters & parameters) : MooseApp(parameters)
 
   Moose::registerObjects(_factory);
   MagpieApp::registerObjects(_factory);
+
+  // Register Modules
+  PhaseFieldApp::registerObjects(_factory);
+  PhaseFieldApp::associateSyntax(_syntax, _action_factory);
 
   Moose::associateSyntax(_syntax, _action_factory);
   MagpieApp::associateSyntax(_syntax, _action_factory);
