@@ -17,8 +17,8 @@
 []
 
 [GlobalParams]
-  op_num = 2
-  grain_num = 2
+  op_num = 17
+  grain_num = 100
   var_name_base = gr
 []
 
@@ -106,15 +106,16 @@
     initial_condition = 600
   [../]
 
-
+  [./GB_energy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
 []
 
 [ICs]
   [./PolycrystalICs]
-    [./BicrystalCircleGrainIC]
-      radius = 1300
-       x = 1500
-       y = 1500
+    [./PolycrystalColoringIC]
+      polycrystal_ic_uo = voronoi
     [../]
   [../]
 
@@ -307,13 +308,11 @@
     type = MaterialRealAux
     property = rhog
     variable = rhog_var
-    execute_on = 'initial timestep_begin'
   [../]
   [./rhoi_aux] # U interstitial
     type = MaterialRealAux
     property = rhoi
     variable = rhoi_var
-    execute_on = 'initial timestep_begin'
   [../]
   [./local_energy]
     type = TotalFreeEnergy
@@ -328,19 +327,20 @@
     type = MaterialRealAux
     property = cv_mat
     variable = cv
-    execute_on = 'initial timestep_begin'
   [../]
   [./ci_aux]
     type = MaterialRealAux
     property = ci_mat
     variable = ci
-    execute_on = 'initial timestep_begin'
   [../]
   [./c_Xe]
     type = MaterialRealAux
     property = c_Xe_matl
     variable = c_Xe
-    execute_on = 'initial timestep_begin'
+  [../]
+  [./GB_energy_calc]
+    type = GBFreeEnergy
+    variable = GB_energy
   [../]
 []
 
@@ -425,7 +425,7 @@
   [./const]
     type = GenericConstantMaterial
     prop_names =  ' D    Va      cvbubeq cgbubeq cibubeq  kgbub  kvbub kibub gmb     gmm T    Efvbar    Efgbar    kTbar     f0     tgrad_corr_mult  kappa_c kappa_op gamma_asymm Di'
-    prop_values = ' 0.01 0.04092 0.5459  0.4541  0.0      1.41   1.41  1.41  0.9218 1.5 1200 7.505e-3  7.505e-3  2.588e-4  0.0    0.0              1.0     0.5273   1.5         1 '
+    prop_values = ' 0.01 0.04092 0.5459  0.4541  0.0      1.41   1.41  1.41  0.9218  1.5 1200 7.505e-3  7.505e-3  2.588e-4  0.0    0.0              1.0     0.5273   1.5         1 '
   [../]
 
   [./kappa]
@@ -602,6 +602,22 @@
     type = ElementIntegralVariablePostprocessor
     variable = local_energy
   [../]
+  [./average_cv]
+    type = ElementAverageValue
+    variable = cv
+  [../]
+  [./average_ci]
+    type = ElementAverageValue
+    variable = ci
+  [../]
+  [./average_cg]
+    type = ElementAverageValue
+    variable = c_Xe
+  [../]
+  [./total_GB_energy]
+    type = ElementIntegralVariablePostprocessor
+    variable = GB_energy
+  [../]
 []
 
 [Executioner]
@@ -652,7 +668,7 @@
     pka_generator = neutronics_fission_generator
     length_unit = NANOMETER
     max_pka_count = 1000
-    recoil_rate_scaling = 1
+    recoil_rate_scaling = 1e-1
     r_rec = 5.45
   [../]
   [./runner]
