@@ -10,6 +10,8 @@
 #include "Moose.h"
 #include "AppFactory.h"
 #include "MooseSyntax.h"
+#include "PhaseFieldApp.h"
+#include "TensorMechanicsApp.h"
 
 template <>
 InputParameters
@@ -26,7 +28,19 @@ registerKnownLabel("MagpieApp");
 MagpieApp::MagpieApp(const InputParameters & parameters) : MooseApp(parameters)
 {
   srand(processor_id());
-  MagpieApp::registerAll(_factory, _action_factory, _syntax);
+  Moose::registerObjects(_factory);
+
+
+  // Register Modules
+  PhaseFieldApp::registerObjects(_factory);
+  PhaseFieldApp::associateSyntax(_syntax, _action_factory);
+
+  TensorMechanicsApp::registerObjects(_factory);
+  TensorMechanicsApp::associateSyntax(_syntax, _action_factory);
+
+  Moose::associateSyntax(_syntax, _action_factory);
+ 
+ MagpieApp::registerAll(_factory, _action_factory, _syntax);
 }
 
 MagpieApp::~MagpieApp() {}
